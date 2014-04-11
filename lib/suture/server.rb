@@ -89,7 +89,7 @@ module Suture
 
     def ssh_options
       options = {}
-      options.merge(:key_data => [private_key]) if ::File.exist(private_key_path)
+      options.merge(:key_data => [private_key]) if ::File.exist?(private_key_path)
     end
 
     def commands
