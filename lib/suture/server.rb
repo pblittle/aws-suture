@@ -89,7 +89,7 @@ module Suture
 
     def ssh_options
       options = {}
-      options.merge(:key_data => [private_key]) if private_key
+      options.merge(:key_data => [private_key]) if ::File.exist(private_key_path)
     end
 
     def commands
@@ -101,7 +101,7 @@ module Suture
     end
 
     def private_key
-      @private_key ||= private_key_path && File.read(private_key_path)
+      @private_key ||= ::File.read(private_key_path)
     end
   end
 end
