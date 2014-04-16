@@ -79,7 +79,7 @@ module Suture
     def key_pair_data(key_name)
       ::File.read(identity_file(key_name))
     rescue StandardError => error
-      raise error.message
+      puts 'Error: ' + error.message
     end
 
     def ssh_options(key_name)
