@@ -20,7 +20,7 @@ module Suture
 
       servers.each do |server|
         table(:border => true) do
-          print_report_body(server)
+          print_report_body(server) if server.ready?
         end
       end
     end
