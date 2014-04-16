@@ -1,32 +1,28 @@
-require 'suture'
+require 'fog'
 
 module Suture
   class Base
+    attr_accessor :options
 
-    require 'fog'
-    require 'command_line_reporter'
-
-    include CommandLineReporter
-
-    CREDENTIALS = {
-      :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
-    }
-
-    attr_reader :compute
-
-    def initialize(*args)
-      @compute ||= compute
+    def initialize(options = {})
+      @options = options
     end
 
     def compute
-      Fog::Compute.new(credentials)
+      @compute ||= begin
+        fail Exception, 'Invalid credentials' unless valid_credentials?
+        Fog::Compute.new(credentials)
+      end
     end
 
     private
 
     def credentials
-      CREDENTIALS.merge(:provider => 'AWS')
+      fail Error, '#credentials should be overridden by decendents'
+    end
+
+    def valid_credentials?
+      fail Error, '#valid_credentials? should be overridden by decendents'
     end
   end
 end

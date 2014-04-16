@@ -1,5 +1,5 @@
 module Suture; end
 
 require 'suture/base'
-require 'suture/server'
-require 'suture/ssh'
+require 'suture/aws'
+require 'suture/report'

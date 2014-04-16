@@ -1,28 +1,68 @@
 #!/usr/bin/env ruby
 
-$:.unshift File.expand_path('../../lib', __FILE__)
+$stdout.sync = true
+$stderr.sync = true
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'optparse'
 require 'suture'
 
-ARGV.unshift "-h" if ARGV.size == 0
+options = {
+  :aws => {
+    :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+    :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
+    :ec2 => {
+      :ssh_user => 'ubuntu',
+      :instance_id => nil,
+      :identity_file_path => ::File.join(Dir.home, '.ec2')
+    }
+  },
+  :check_command => 'openssl version -b',
+  :check_result => 'Mon Apr  7 20:33:29 UTC 2014'
+}
 
-options = OptionParser.new do |opts|
-  opts.on( '-h', '--help', 'Display this screen' ) do
-    puts opts
-    exit
+parser = OptionParser.new do |opts|
+  opts.banner = 'Usage: suture [<options>] check'
+
+  opts.on('-A KEY', '--aws-access-key-id KEY',
+          'the access key identifier') do |access_key_id|
+    options[:aws][:access_key_id] = access_key_id
   end
-  # opts.on( '-c', '--commands'...
-end
-options.parse!
 
-klass = ARGV.shift
-args = ARGV
+  opts.on('-K SECRET', '--aws-secret-access-key SECRET',
+          'the access key identifier') do |secret_access_key|
+    options[:aws][:secret_access_key] = secret_access_key
+  end
 
-begin
-  suture = Suture::Server.new args
-  suture.send klass
-rescue Exception => e
-  puts "Error: #{e.message}"
-  exit 1
+  opts.on('-x USERNAME', '--ssh-user USERNAME',
+          'the ssh username') do |ssh_user|
+    options[:aws][:ec2][:ssh_user] = ssh_user
+  end
+
+  opts.on('-i IDENTITY_FILE_PATH', '--identity-file-path IDENTITY_FILE_PATH',
+          'the SSH identity file used for authentication') do |identity_file_path|
+    options[:aws][:ec2][:identity_file_path] = identity_file_path
+  end
+
+  opts.on('-I INSTANCE_ID', '--instance-id INSTANCE_ID',
+          'the instance to check') do |instance_id|
+    options[:aws][:ec2][:instance_id] = instance_id
+  end
+
+  opts.on('-c CHECK_COMMAND', '--check-command CHECK_COMMAND',
+          'the check command to run ') do |check_command|
+    options[:check_command] = check_command
+  end
+
+  opts.on('-r CHECK_RESULT', '--check-result CHECK_RESULT',
+          'the check result to match') do |check_result|
+    options[:check_result] = check_result
+  end
 end
+parser.parse!(ARGV)
+
+command = ARGV.shift.to_sym
+
+suture = Suture::AWS.new options
+suture.send command
