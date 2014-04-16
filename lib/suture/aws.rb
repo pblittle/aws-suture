@@ -55,7 +55,7 @@ module Suture
     end
 
     def instance_id
-      options[:aws][:ec2][:instance_id]
+      options[:aws][:ec2][:instance_id] || []
     rescue
       []
     end
