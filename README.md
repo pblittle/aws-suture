@@ -11,7 +11,7 @@ If you prefer to check only one instance, pass in the `--instance-id` flag with 
 
 You'll need to start by giving suture your AWS credentials. You can either export `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` credentials:
 
-```
+```bash
 $ export AWS_ACCESS_KEY_ID='your-access-key'
 $ export AWS_SECRET_ACCESS_KEY='your-secret-key'
 ```
@@ -22,14 +22,14 @@ By default, suture uses the `ubuntu` user to connect to the instance. This can b
 
 Finally, run the `check` command to view the status of your instances:
 
-```
+```bash
 $ bundle install
 $ bundle exec ./bin/suture [<options>] check
 ```
 
 For additional command options, `./bin/suture --help`:
 
-```
+```bash
  Usage: suture [<options>] check
     -A, --aws-access-key-id KEY      the access key identifier
     -K SECRET,                       the access key identifier
@@ -43,7 +43,7 @@ For additional command options, `./bin/suture --help`:
     -r, --check-result CHECK_RESULT  the check result to match
 ```
 
-You will find the default config values in the options hash. You should overwrite these values using the command line flags.
+You will find the default config values in the options hash. You should overwrite these values using the command line flags above.
 
 ```ruby
   options = {
