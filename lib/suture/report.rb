@@ -28,12 +28,11 @@ module Suture
     def print_report_header
       table(:border => true) do
         row do
-          column('Server ID', :width => 10)
-          column('OpenSSL Version', :width => 30)
-          column('Name', :width => 26)
+          column('Server ID', :width => 12)
+          column('OpenSSL Version', :width => 36)
+          column('Name', :width => 28)
           column('Public IP', :width => 16)
           column('Key Name', :width => 24)
-          column('State', :width => 10)
         end
       end
     end
@@ -51,12 +50,11 @@ module Suture
       end
 
       row do
-        column(server.id, :width => 10)
-        column(result, :color => result_color, :width => 30)
-        column(server.tags['Name'], :width => 26)
-        column(server.public_ip_address, :width => 16)
-        column(server.key_name, :width => 24)
-        column(server.state, :width => 10)
+        column(server.id, :color => result_color, :width => 12)
+        column(result, :color => result_color, :width => 38)
+        column(server.tags['Name'], :color => result_color, :width => 26)
+        column(server.public_ip_address, :color => result_color, :width => 16)
+        column(server.key_name, :color => result_color, :width => 24)
       end
     end
 
