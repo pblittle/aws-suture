@@ -16,7 +16,8 @@ options = {
       :ssh_user => 'ubuntu',
       :instance_id => nil,
       :identity_file_path => ::File.join(Dir.home, '.ec2')
-    }
+    },
+    :region => 'us-east-1'
   },
   :check_command => 'openssl version -b',
   :check_result => 'Mon Apr  7 20:33:29 UTC 2014'
@@ -48,6 +49,11 @@ parser = OptionParser.new do |opts|
   opts.on('-I INSTANCE_ID', '--instance-id INSTANCE_ID',
           'the instance to check') do |instance_id|
     options[:aws][:ec2][:instance_id] = instance_id
+  end
+
+  opts.on('--region REGION',
+          'your AWS region') do |region|
+    options[:aws][:region] = region
   end
 
   opts.on('-c CHECK_COMMAND', '--check-command CHECK_COMMAND',

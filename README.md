@@ -38,6 +38,7 @@ For additional command options, `./bin/suture --help`:
     -i IDENTITY_FILE_PATH,           the SSH identity file used for authentication
         --identity-file-path
     -I, --instance-id INSTANCE_ID    the instance to check
+        --region REGION              your AWS region
     -c CHECK_COMMAND,                the check command to run
         --check-command
     -r, --check-result CHECK_RESULT  the check result to match
@@ -54,7 +55,8 @@ You will find the default config values in the options hash. You should overwrit
         :ssh_user => 'ubuntu',
         :instance_id => nil,
         :identity_file_path => ::File.join(Dir.home, '.ec2')
-      }
+      },
+      :region => 'us-east-1'
     },
     :check_command => 'openssl version -a',
     :check_result => 'Mon Apr  7 20:33:29 UTC 2014'

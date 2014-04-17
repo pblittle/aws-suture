@@ -30,7 +30,8 @@ module Suture
       {
         :provider => 'AWS',
         :aws_access_key_id => options[:aws][:access_key_id],
-        :aws_secret_access_key => options[:aws][:secret_access_key]
+        :aws_secret_access_key => options[:aws][:secret_access_key],
+        :region => options[:aws][:region]
       }
     end
 
@@ -38,7 +39,8 @@ module Suture
       options.key?(:aws) &&
         options[:aws].is_a?(Hash) &&
         options[:aws][:access_key_id] &&
-        options[:aws][:secret_access_key]
+        options[:aws][:secret_access_key] &&
+        options[:aws][:region]
     end
 
     def instances
