@@ -1,11 +1,27 @@
+## tl;dr
+
+```bash
+$ git clone git@github.com:pblittle/suture.git
+$ cd suture
+$ bundle install
+$ bundle exec ./bin/suture --help
+$ bundle exec ./bin/suture <options> check
+```
+
 Suture
 ======
 
-Suture is a tool for scanning your AWS EC2 instances for Heartbleed vulnerability. It will ssh into each of your EC2 instances, run `openssl version -b` to check the openssl build date. If the output of the command matches `Mon Apr  7 20:33:29 UTC 2014`, then we know the build does not include the Heartbleed vulnerability.
+Suture is a tool for running arbitrary commands against your AWS EC2 instances. You can run it against an individual instance or an entire region. Suture was originally written to determine if any of our running EC2 instances were using a version of OpenSSL susceptible to the Heartbleed vulnerability.
 
-Without having the resources to test in environments outside of Ubuntu, I have made both the check and result configurable. Simply pass the check command using `--check-command` and the desired result using `--check-result`. A regex match will be performed to determine the result.
+A suture check will ssh into each of your EC2 instances and execute a given command. The output of the command will be compared to a provided string or regular expression for validation.
+
+By default, Suture will run `openssl version -v` to check the OpenSSL version. If the output of the command matches `1.0.(1[a-f]|2-beta1)`, then we know the build does not include the Heartbleed vulnerability. A report will indicate the comparision result.
+
+If you aren't using this for the OpenSSL vunlerability check, simply pass a custom check command using `--check-command` and the desired result using `--check-result`. A regex match will be performed to determine the result.
 
 If you prefer to check only one instance, pass in the `--instance-id` flag with the instance ID in question. This will reduce the query to one instance.
+
+If you are checking a region other than `us-east-1`, provide the desired region using the `--region` flag.
 
 ## Usage
 
@@ -58,8 +74,8 @@ You will find the default config values in the options hash. You should overwrit
       },
       :region => 'us-east-1'
     },
-    :check_command => 'openssl version -a',
-    :check_result => 'Mon Apr  7 20:33:29 UTC 2014'
+    :check_command => 'openssl version -v',
+    :check_result => 'OpenSSL 1.0.1g 7 Apr 2014'
   }
 ```
 
