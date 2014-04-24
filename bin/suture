@@ -19,8 +19,8 @@ options = {
     },
     :region => 'us-east-1'
   },
-  :check_command => 'openssl version -b',
-  :check_result => 'Mon Apr  7 20:33:29 UTC 2014'
+  :check_command => 'openssl version -v',
+  :check_result => '1.0.(1[a-f]|2-beta1)'
 }
 
 parser = OptionParser.new do |opts|
