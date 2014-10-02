@@ -61,9 +61,24 @@ parser = OptionParser.new do |opts|
     options[:check_command] = check_command
   end
 
-  opts.on('-r CHECK_RESULT', '--check-result CHECK_RESULT',
+  opts.on('-r EXPECTED_RESULT', '--expected-result EXPECTED_RESULT',
           'the check result to match') do |check_result|
-    options[:check_result] = check_result
+    options[:expected_result] = check_result
+  end
+
+  opts.on('-q', '--quiet',
+          'do not output to terminal') do |quiet|
+    options[:quiet] = true
+  end
+
+  opts.on('-j FILE_PATH', '--json FILE_PATH',
+          'path to write JSON output to') do |json_path|
+    options[:json] = json_path
+  end
+
+  opts.on('-o CSV_PATH', '--csv CSV_PATH',
+    'path to write CSV output') do |csv_path|
+    options[:csv] = csv_path
   end
 end
 parser.parse!(ARGV)

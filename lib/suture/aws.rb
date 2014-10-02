@@ -6,14 +6,8 @@ module Suture
 
     attr_reader :report
 
-    def initialize(options = {})
-      super(options)
-
-      @report = Suture::Report.new(instances, check_command, check_result)
-    end
-
     def check
-      report.render
+      render(reports)
     end
 
     def patch
@@ -63,9 +57,17 @@ module Suture
     end
 
     def identity_file(key_name)
-      ::File.join(
+      identity_file = ::File.join(
         identity_file_path, key_name
       )
+
+      if ::File.exist?(identity_file)
+        identity_file
+      elsif ::File.exist?(identity_file + '.pem')
+        identity_file + '.pem'
+      else
+        raise "Keyfile #{key_name} not found in #{identity_file_path}"
+      end
     rescue StandardError => error
       raise error.message
     end
@@ -90,18 +92,6 @@ module Suture
 
     def ssh_user
       options[:aws][:ec2][:ssh_user]
-    rescue StandardError => error
-      puts 'Error: ' + error.message
-    end
-
-    def check_command
-      options[:check_command]
-    rescue StandardError => error
-      puts 'Error: ' + error.message
-    end
-
-    def check_result
-      options[:check_result]
     rescue StandardError => error
       puts 'Error: ' + error.message
     end
